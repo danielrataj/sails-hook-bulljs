@@ -2,7 +2,7 @@
 
 Sails.js hook to use [bull] package for handling distributed jobs and messages.
 
-Based on [sails-hook-bull] package (thanks).
+Based on [sails-hook-bull] package (👍).
 
 ## Installation
 
@@ -49,6 +49,14 @@ module.exports = {
         max: 1000,
         duration: 5000
     }
+  },
+  /**
+   * If "false" it only allows adding object to queue. It does not process a queue or fire events.
+   * Great option for backend workers.
+   * @return {Boolean} True by default.
+   */
+  guard: async => {
+    return true
   },
   process: async job => {
     // process queue

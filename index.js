@@ -19,7 +19,7 @@ module.exports = (sails) => {
       for (let file of queueFiles) {
         let filePath = path.join(queueDir, file);
 
-        let queue = buildQueue.bind(this)(sails, filePath);
+        let queue = await buildQueue.bind(this)(sails, filePath);
 
         let queueFile = path.basename(filePath, ".js");
 
@@ -30,10 +30,19 @@ module.exports = (sails) => {
   };
 };
 
-const buildQueue = function (sails, filePath) {
+const buildQueue = async function (sails, filePath) {
   let queueData = getDataFromPath.bind(this)(sails, filePath);
 
   let queue = createQueue(queueData);
+
+  // "guard" allows adding items to queue but nothing else without process it or react on events
+  if ("guard" in queueData) {
+    const guard = await queueData['guard']()
+
+    if (typeof guard === 'boolean' && guard === false) {
+      return queue
+    }
+  }
 
   // process queue
   if ("process" in queueData) {

@@ -1,6 +1,6 @@
 {
   "name": "sails-hook-bulljs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A bull wrapper for sails",
   "main": "index.js",
   "repository": {
